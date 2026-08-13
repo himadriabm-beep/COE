@@ -55,6 +55,7 @@ The section navigation pills at the top (`sections` array) are generated automat
 
 Edit the relevant array and the page re-renders automatically — no other markup needs to change. The three-column card grids reflow to a single column below 900px automatically.
 
+
 ## About
 
 Companion site to the white paper *"Building the Center of Excellence,"* covering the operating model triad (Practice / GCC-GBS / CoE), CoE types, setup, resourcing, governance, KPIs, knowledge management, maturity, people, change management, internal awareness campaigns, and scalability — with AI/GenAI, Program & Portfolio Management, and Data & Analytics CoEs as running examples throughout.
