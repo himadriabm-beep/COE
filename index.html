@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Building the Center of Excellence — Himadri Roy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f6f5f1;
+  --card:#ffffff;
+  --ink:#1c2230;
+  --ink-dim:#6b7280;
+  --ink-faint:#9aa2af;
+  --line:#e2e0d8;
+  --navy:#182849;
+  --navy-2:#22355e;
+  --gold:#e8b64a;
+  --blue-bg:#eaf2fb; --blue-bd:#a9c8ec; --blue-ink:#1f4e86;
+  --gate-bg:#f4ecd6; --gate-bd:#dcc07f; --gate-ink:#8a6a1f;
+  --purple-bg:#efe8fb; --purple-bd:#c6acf0; --purple-ink:#6b3fb0;
+  --go-bg:#e6f6ec; --go-bd:#57b884; --go-ink:#1c7a48;
+  --no-bg:#fbeaea; --no-bd:#e28a84; --no-ink:#a3352c;
+  --hold-bg:#fdf1de; --hold-bd:#e6b869; --hold-ink:#93630f;
+  --teal-bg:#e3f4ef; --teal-bd:#8fcdba; --teal-ink:#1c6f57;
+  --green-solid:#2f9e63;
+}
+*{ box-sizing:border-box; }
+html{ scroll-behavior:smooth; }
+body{
+  margin:0;
+  background:
+    radial-gradient(1000px 500px at 10% -10%, #ffffff 0%, transparent 55%),
+    var(--paper);
+  color:var(--ink);
+  font-family:'IBM Plex Sans', sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+.display{ font-family:'Space Grotesk', sans-serif; }
+.mono{ font-family:'IBM Plex Mono', monospace; }
+a{ color:inherit; }
+
+/* ---------------- Header + section nav ---------------- */
+header{ text-align:center; padding:38px 20px 22px; border-bottom:1px solid var(--line); background:var(--card); }
+h1{ font-family:'Space Grotesk', sans-serif; font-weight:700; font-size:clamp(22px,3vw,32px); margin:0 0 8px; letter-spacing:-.01em; }
+header .subtitle{ font-family:'IBM Plex Mono', monospace; font-size:12px; letter-spacing:.09em; text-transform:uppercase; color:var(--ink-dim); margin-bottom:24px; }
+header .subtitle .sep{ color:var(--gold); margin:0 8px; }
+.secnav{ display:flex; align-items:center; justify-content:center; gap:6px; flex-wrap:wrap; max-width:1080px; margin:0 auto; }
+.secnav a{ text-decoration:none; }
+.secnav-pill{
+  display:inline-flex; align-items:center; gap:5px;
+  font-family:'IBM Plex Mono', monospace; font-size:10.5px; font-weight:600; letter-spacing:.02em;
+  padding:7px 12px; border-radius:100px; background:#fbfaf7; border:1px solid var(--line); color:var(--ink-dim);
+  transition:background .15s, color .15s, border-color .15s;
+  cursor:pointer;
+}
+.secnav-pill .n{ color:var(--gold); font-weight:700; }
+.secnav-pill:hover{ border-color:var(--navy); color:var(--navy); }
+.secnav-pill.active{ background:var(--navy); border-color:var(--navy); color:#fff; }
+.secnav-pill.active .n{ color:var(--gold); }
+
+/* ---------------- Section shells ---------------- */
+.section-divider{ max-width:1180px; margin:0 auto; padding:0 28px; }
+.section-divider hr{ border:none; border-top:1px solid var(--line); margin:0; }
+section.topic{ max-width:1180px; margin:52px auto 6px; padding:0 28px; scroll-margin-top:20px; }
+.topic-head{ text-align:center; margin-bottom:32px; }
+.eyebrow{ font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--purple-ink); margin-bottom:9px; }
+.topic-head h2{ font-family:'Space Grotesk', sans-serif; font-weight:700; font-size:clamp(20px,2.6vw,28px); margin:0 0 10px; letter-spacing:-.01em; }
+.topic-head p{ font-size:13.5px; color:var(--ink-dim); max-width:760px; margin:0 auto; line-height:1.65; }
+.subhead{ font-family:'Space Grotesk', sans-serif; font-weight:600; font-size:14px; margin:26px 0 12px; color:var(--ink); }
+.body-note{ font-size:12.8px; color:var(--ink-dim); line-height:1.7; max-width:900px; }
+
+/* ---------------- Card grid (3-up) ---------------- */
+.card-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+@media (max-width:900px){ .card-grid{ grid-template-columns:1fr; } }
+.card-grid.cols-4{ grid-template-columns:repeat(4,1fr); }
+@media (max-width:1000px){ .card-grid.cols-4{ grid-template-columns:repeat(2,1fr); } }
+@media (max-width:560px){ .card-grid.cols-4{ grid-template-columns:1fr; } }
+
+.tcard{ background:var(--card); border:1px solid var(--line); border-top:4px solid var(--navy); border-radius:10px; padding:16px 16px 17px; }
+.tcard.accent-gold{ border-top-color:var(--gold); }
+.tcard.accent-purple{ border-top-color:var(--purple-ink); }
+.tcard.accent-teal{ border-top-color:var(--teal-ink); }
+.tcard .tag{ font-family:'IBM Plex Mono', monospace; font-size:9.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-faint); margin-bottom:6px; }
+.tcard h4{ font-family:'Space Grotesk', sans-serif; font-size:14.5px; margin:0 0 8px; line-height:1.3; }
+.tcard ul{ margin:0; padding-left:16px; }
+.tcard li{ font-size:11.6px; color:var(--ink-dim); line-height:1.65; }
+.tcard .row{ display:flex; gap:6px; margin:8px 0 0; font-size:11.3px; }
+.tcard .row .k{ font-family:'IBM Plex Mono', monospace; font-size:9.5px; text-transform:uppercase; letter-spacing:.04em; color:var(--navy-2); flex-shrink:0; padding-top:1px; }
+.tcard .row .v{ color:var(--ink-dim); line-height:1.55; }
+.tcard .foot{ margin-top:10px; font-size:11px; color:var(--ink-faint); font-style:italic; }
+
+/* ---------------- Chip rows ---------------- */
+.chip-row{ display:flex; flex-wrap:wrap; gap:8px; justify-content:center; }
+.chip{ font-size:11.5px; font-weight:600; padding:7px 14px; border-radius:100px; border:1px solid; }
+.chip.knowledge{ background:var(--blue-bg); border-color:var(--blue-bd); color:var(--blue-ink); }
+.chip.approval{ background:var(--go-bg); border-color:var(--go-bd); color:var(--go-ink); }
+.chip.system{ background:var(--purple-bg); border-color:var(--purple-bd); color:var(--purple-ink); }
+.chip.gold{ background:var(--gate-bg); border-color:var(--gate-bd); color:var(--gate-ink); }
+.chip.teal{ background:var(--teal-bg); border-color:var(--teal-bd); color:var(--teal-ink); }
+.band{ width:100%; margin-top:6px; }
+.band-label{ text-align:center; font-family:'IBM Plex Mono', monospace; font-size:10px; letter-spacing:.09em; text-transform:uppercase; color:var(--ink-faint); margin-bottom:9px; }
+
+/* ---------------- Info / example boxes ---------------- */
+.info{ background:var(--blue-bg); border:1px solid var(--blue-bd); border-radius:9px; padding:13px 15px 14px; }
+.info .node-head p{ margin:0; color:var(--blue-ink); font-weight:700; font-size:12.6px; }
+.info ul{ margin:8px 0 0; padding-left:16px; }
+.info li{ font-size:11.8px; color:var(--ink-dim); line-height:1.7; }
+.example{ background:var(--teal-bg); border:1.4px dashed var(--teal-bd); border-radius:9px; padding:13px 15px 14px; }
+.example .node-head p{ margin:0; color:var(--teal-ink); font-weight:700; font-size:11px; letter-spacing:.04em; text-transform:uppercase; }
+.example .txt{ font-size:12.2px; color:var(--ink); line-height:1.65; margin-top:6px; font-style:italic; }
+.two-col{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+@media (max-width:760px){ .two-col{ grid-template-columns:1fr; } }
+
+/* ---------------- Decision-style objection/response ---------------- */
+.choices{ display:flex; gap:10px; flex-wrap:wrap; }
+.choice{ flex:1 1 46%; min-width:220px; border-radius:9px; padding:11px 13px 12px; border:1.4px solid; }
+.choice.no{ background:var(--no-bg); border-color:var(--no-bd); }
+.choice.go{ background:var(--go-bg); border-color:var(--go-bd); }
+.choice.hold{ background:var(--hold-bg); border-color:var(--hold-bd); }
+.choice .lbl{ display:block; font-family:'IBM Plex Mono', monospace; font-size:10px; font-weight:700; letter-spacing:.04em; margin-bottom:5px; }
+.choice.no .lbl{ color:var(--no-ink); }
+.choice.go .lbl{ color:var(--go-ink); }
+.choice.hold .lbl{ color:var(--hold-ink); }
+.choice .txt{ font-size:11.6px; line-height:1.55; color:var(--ink); }
+
+/* ---------------- Flow row (funnel / lifecycle) ---------------- */
+.flow-row{ display:flex; flex-wrap:wrap; align-items:stretch; gap:10px 0; justify-content:center; padding:4px 2px 6px; }
+.flow-node{ flex:1 1 190px; max-width:210px; min-width:170px; background:var(--card); border:1px solid var(--line); border-top:4px solid var(--gold); border-radius:10px; padding:13px 14px 14px; }
+.flow-node .step-tag{ font-family:'IBM Plex Mono', monospace; font-size:9.5px; letter-spacing:.08em; text-transform:uppercase; color:#a3801f; margin-bottom:5px; }
+.flow-node h4{ font-family:'Space Grotesk', sans-serif; font-size:13px; margin:0 0 6px; line-height:1.3; }
+.flow-node p{ margin:0; font-size:11.1px; color:var(--ink-dim); line-height:1.55; }
+.flow-arrow{ display:flex; align-items:center; justify-content:center; color:var(--gold); font-size:18px; padding:0 4px; flex-shrink:0; }
+@media (max-width:760px){ .flow-row{ flex-direction:column; } .flow-arrow{ transform:rotate(90deg); padding:4px 0; } }
+
+/* ---------------- Stage tracker (maturity / adoption curve) ---------------- */
+.stage-row{ display:flex; align-items:stretch; justify-content:center; gap:8px; flex-wrap:wrap; }
+.stage-pill{ flex:1 1 180px; max-width:230px; background:linear-gradient(160deg, var(--navy), var(--navy-2)); color:#fff; border-radius:12px; padding:14px 16px 15px; }
+.stage-pill .lv{ font-family:'IBM Plex Mono', monospace; font-size:10px; letter-spacing:.09em; color:var(--gold); margin-bottom:4px; }
+.stage-pill h4{ font-family:'Space Grotesk', sans-serif; font-size:14px; margin:0 0 6px; }
+.stage-pill p{ font-size:11.2px; color:#c7cfe0; line-height:1.55; margin:0; }
+.stage-arrow{ display:flex; align-items:center; color:var(--ink-faint); font-size:16px; }
+@media (max-width:900px){ .stage-row{ flex-direction:column; align-items:stretch; } .stage-arrow{ transform:rotate(90deg); justify-content:center; padding:2px 0; } }
+
+/* ---------------- Simple data grid (tables) ---------------- */
+.dgrid{ width:100%; border-collapse:separate; border-spacing:0; background:var(--card); border:1px solid var(--line); border-radius:12px; overflow:hidden; font-size:12px; }
+.dgrid th{ background:var(--navy); color:#fff; font-family:'Space Grotesk', sans-serif; font-weight:600; font-size:12px; text-align:left; padding:11px 13px; }
+.dgrid td{ padding:11px 13px; border-top:1px solid var(--line); color:var(--ink-dim); line-height:1.55; vertical-align:top; }
+.dgrid tr:nth-child(even) td{ background:#fbfaf7; }
+.dgrid td.strong{ color:var(--ink); font-weight:600; }
+.dgrid-wrap{ overflow-x:auto; border-radius:12px; box-shadow:0 1px 2px rgba(20,20,10,.04), 0 10px 24px -18px rgba(20,20,10,.25); }
+
+/* ---------------- Tabs (governance by CoE) ---------------- */
+.tabbar{ display:flex; gap:6px; justify-content:center; margin-bottom:16px; flex-wrap:wrap; }
+.tab-btn{ font-family:'IBM Plex Mono', monospace; font-size:11px; font-weight:600; letter-spacing:.03em; padding:8px 16px; border-radius:100px; border:1px solid var(--line); background:#fbfaf7; color:var(--ink-dim); cursor:pointer; }
+.tab-btn.active{ background:var(--navy); border-color:var(--navy); color:#fff; }
+.tab-panel{ display:none; }
+.tab-panel.active{ display:block; }
+
+/* ---------------- Milestone / principles ---------------- */
+.milestone{ border-radius:9px; padding:13px 15px; text-align:center; }
+.milestone.navy{ background:var(--navy); color:#fff; }
+.milestone .tag{ font-family:'IBM Plex Mono', monospace; font-size:10.5px; letter-spacing:.08em; color:var(--gold); }
+.milestone .headline{ font-family:'Space Grotesk', sans-serif; font-weight:700; font-size:13.5px; margin:4px 0 0; }
+.principles{ max-width:1180px; margin:12px auto 60px; padding:0 28px; }
+.principles-box{ border:1.4px dashed #c9c2a8; border-radius:12px; background:var(--card); padding:20px 24px; }
+.principles-box h3{ font-family:'Space Grotesk', sans-serif; font-size:13px; letter-spacing:.08em; text-transform:uppercase; margin:0 0 14px; color:var(--ink-dim); }
+.principles-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:10px 22px; }
+.principles-grid div{ font-size:12.5px; color:var(--ink); line-height:1.55; }
+.principles-grid strong{ color:var(--green-solid); }
+footer.credit{ text-align:center; padding:0 20px 50px; color:var(--ink-faint); font-size:11px; }
+
+/* misc */
+.list-plain{ margin:0; padding-left:18px; }
+.list-plain li{ font-size:12.6px; color:var(--ink-dim); line-height:1.75; }
+.center{ text-align:center; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Building the Center of Excellence</h1>
+  <div class="subtitle">Himadri Roy <span class="sep">·</span> Practice, GCC/GBS &amp; CoE <span class="sep">·</span> AI · Program Management · Data &amp; Analytics</div>
+  <nav class="secnav" id="secnav"></nav>
+</header>
+
+<!-- ================= 01 TRIAD ================= -->
+<section class="topic" id="s1">
+  <div class="topic-head">
+    <div class="eyebrow">01 · The operating model triad</div>
+    <h2>Practice, GCC/GBS and Center of Excellence</h2>
+    <p>Three constructs enterprises reach for when a capability needs to scale — often used interchangeably, but each answers a different question.</p>
+  </div>
+  <div class="card-grid" id="triad-cards"></div>
+  <div class="subhead center" style="margin-top:24px;">How they work in tandem</div>
+  <p class="body-note center" style="margin:0 auto 16px;">Picture GCC/GBS as the factory, Practice as the assembly lines inside it, and the CoE as the R&amp;D and quality-engineering function that improves every line, regardless of which factory it runs in.</p>
+  <div class="example" style="margin-bottom:18px;">
+    <div class="node-head"><p>Example</p></div>
+    <div class="txt">A global insurer's Claims practice supplied the adjusters; its GCC in Manila ran claims processing at scale for five functions; a central Claims Excellence CoE set the quality standard and fraud-detection playbook used by every claims team, wherever it sat.</div>
+  </div>
+  <div class="subhead center">Benefits of a CoE</div>
+  <div class="chip-row" id="benefits-chips"></div>
+</section>
+
+<div class="section-divider"><hr></div>
+
+<!-- ================= 02 LANDSCAPE ================= -->
+<section class="topic" id="s2">
+  <div class="topic-head">
+    <div class="eyebrow">02 · The CoE landscape</div>
+    <h2>Types of Centers of Excellence</h2>
+    <p>CoEs fall into three families. This paper deep-dives on one from each: AI/GenAI, Program &amp; Portfolio Management, and Data &amp; Analytics.</p>
+  </div>
+  <div class="card-grid" id="landscape-cards"></div>
+</section>
+
+<div class="section-divider"><hr></div>
+
+<!-- ================= 03 SETUP ================= -->
+<section class="topic" id="s3">
+  <div class="topic-head">
+    <div class="eyebrow">03 · Setting up a CoE</div>
+    <h2>Vision, stakeholders and deliverables</h2>
+    <p>Start from a named business problem, not an org-chart ambition. Secure a sponsor and define scope boundaries before hiring.</p>
+  </div>
+  <div class="two-col">
+    <div class="info">
+      <div class="node-head"><p>Vision statement template</p></div>
+      <ul>
+        <li><strong style="color:var(--ink)">Who we serve</strong> — the practices, geographies or business units the CoE exists to uplift</li>
+        <li><strong style="color:var(--ink)">What excellence looks like</strong> — the 2-3 outcomes that define success</li>
+        <li><strong style="color:var(--ink)">How we get there</strong> — standards, accelerators, governance, enablement</li>
+        <li><strong style="color:var(--ink)">By when</strong> — a credible horizon, usually 12-24 months to embedded maturity</li>
+      </ul>
+    </div>
+    <div>
+      <div class="band-label" style="text-align:left; margin-bottom:10px;">Key stakeholders</div>
+      <div class="chip-row" id="stakeholder-chips" style="justify-content:flex-start;"></div>
+    </div>
+  </div>
+  <div class="subhead center" style="margin-top:28px;">Tangible deliverables by CoE</div>
+  <div class="card-grid" id="deliverable-cards"></div>
+</section>
+
+<div class="section-divider"><hr></div>
+
+<!-- ================= 04 RESOURCING ================= -->
+<section class="topic" id="s4">
+  <div class="topic-head">
+    <div class="eyebrow">04 · Resourcing the CoE</div>
+    <h2>Models and trade-offs</h2>
+    <p>Resourcing is where most CoEs fail in practice — the choice is rarely revisited as demand and maturity change.</p>
+  </div>
+  <div class="card-grid cols-4" id="resourcing-cards"></div>
+  <div class="example" style="margin-top:18px;">
+    <div class="node-head"><p>Example</p></div>
+    <div class="txt">A Data &amp; Analytics CoE started virtual — two senior analysts at 20% time building a data catalog. Within a year, demand outgrew part-time bandwidth, and it converted to a small fully centralized team of four, with catalog stewardship federated to data owners.</div>
+  </div>
+</section>
+
+<div class="section-divider"><hr></div>
+
+<!-- ================= 05 GOVERNANCE ================= -->
+<section class="topic" id="s5">
+  <div class="topic-head">
+    <div class="eyebrow">05 · Governance and cadence</div>
+    <h2>The CoE's nervous system</h2>
+    <p>A layered cadence — strategic, operating, and community forums — turns standards on a page into standards that are actually followed.</p>
+  </div>
+  <div class="tabbar" id="gov-tabs"></div>
+  <div id="gov-panels"></div>
+</section>
+
+<div class="section-divider"><hr></div>
+
+<!-- ================= 06 ACTIVITIES & KPIs ================= -->
+<section class="topic" id="s6">
+  <div class="topic-head">
+    <div class="eyebrow">06 · Core activities, OKRs/KPIs and reporting</div>
+    <h2>What the CoE does, and how it proves it</h2>
+    <p>Every CoE runs the same six core activities. What differs is the KPI set that proves impact.</p>
+  </div>
+  <div class="chip-row" id="activity-chips" style="margin-bottom:26px;"></div>
+  <div class="card-grid" id="kpi-cards"></div>
+  <div class="example" style="margin-top:18px;">
+    <div class="node-head"><p>Example</p></div>
+    <div class="txt">An AI CoE reported "40 prompts published" and got a lukewarm response. The next quarter it reported "40 prompts published, 12 in active production use, saving an estimated 6 hours per week per adopting team" — same activity, a materially different conversation with leadership.</div>
+  </div>
+</section>
+
+<div class="section-divider"><hr></div>
+
+<!-- ================= 07 KNOWLEDGE MANAGEMENT ================= -->
+<section class="topic" id="s7">
+  <div class="topic-head">
+    <div class="eyebrow">07 · Knowledge management</div>
+    <h2>The CoE's real asset</h2>
+    <p>A CoE's authority comes from being the trusted, current source of accumulated knowledge. Strip that away and it's just an org-chart box.</p>
+  </div>
+  <div class="two-col" style="margin-bottom:26px;">
+    <div class="info">
+      <div class="node-head"><p>Explicit knowledge</p></div>
+      <p style="font-size:11.8px; color:var(--ink-dim); line-height:1.7; margin:8px 0 0;">Documented standards, templates, playbooks, policies — easy to capture, easy to publish, but only ever the surface layer.</p>
+    </div>
+    <div class="example">
+      <div class="node-head"><p>Tacit knowledge</p></div>
+      <div class="txt" style="font-style:normal;">The judgment senior practitioners apply that never makes a template — why a risk was escalated, why a standard approach was deliberately skipped. Harder to capture, usually where the real value sits.</div>
+    </div>
+  </div>
+  <div class="band-label">The knowledge lifecycle</div>
+  <div class="flow-row" id="km-flow"></div>
+</section>
+
+<div class="section-divider"><hr></div>
+
+<!-- ================= 08 MATURITY & FUNDING ================= -->
+<section class="topic" id="s8">
+  <div class="topic-head">
+    <div class="eyebrow">08 · Beyond the basics</div>
+    <h2>Maturity, funding, and the value narrative</h2>
+    <p>How the CoE gets better, how it's paid for, and what to avoid.</p>
+  </div>
+  <div class="band-label">Maturity model</div>
+  <div class="stage-row" id="maturity-stages" style="margin-bottom:30px;"></div>
+  <div class="subhead center">Funding models</div>
+  <div class="chip-row" id="funding-chips" style="margin-bottom:28px;"></div>
+  <div class="subhead center">Common anti-patterns to avoid</div>
+  <div class="choices" id="antipattern-choices"></div>
+  <div class="info" style="margin-top:22px;">
+    <div class="node-head"><p>The CXO value narrative</p></div>
+    <p style="font-size:11.8px; color:var(--ink-dim); line-height:1.7; margin:8px 0 0;">Translate CoE output into the three things a P&amp;L owner tracks: cost avoided, risk reduced, speed gained. "We published 40 standards" won't survive a budget review. "Standardized delivery cut program overruns by X% and avoided Y in rework" will.</p>
+  </div>
+</section>
+
+<div class="section-divider"><hr></div>
+
+<!-- ================= 09 PEOPLE ================= -->
+<section class="topic" id="s9">
+  <div class="topic-head">
+    <div class="eyebrow">09 · People management</div>
+    <h2>The CoE is only as good as who staffs it</h2>
+    <p>Structurally sound CoEs quietly fail by treating headcount as a line item rather than a talent strategy.</p>
+  </div>
+  <div class="dgrid-wrap">
+    <table class="dgrid" id="roles-table"></table>
+  </div>
+  <div class="two-col" style="margin-top:20px;">
+    <div class="info">
+      <div class="node-head"><p>Competency &amp; career</p></div>
+      <ul>
+        <li>A skills ladder tied to recognized levels — CoE tenure as a credible resume line</li>
+        <li>A rotation model: 6-12 months in, then back to delivery — keeps the CoE grounded</li>
+        <li>CoE contribution counted explicitly in performance review and promotion</li>
+      </ul>
+    </div>
+    <div class="info" style="background:var(--gate-bg); border-color:var(--gate-bd);">
+      <div class="node-head"><p style="color:var(--gate-ink);">Retention &amp; succession</p></div>
+      <ul>
+        <li style="color:var(--ink-dim);">Protect core roles from being pulled back to billable delivery first</li>
+        <li style="color:var(--ink-dim);">Build a two-deep succession bench for the CoE lead role</li>
+        <li style="color:var(--ink-dim);">Offer a dual career ladder — technical depth and CoE leadership</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"><hr></div>
+
+<!-- ================= 10 CHANGE MANAGEMENT ================= -->
+<section class="topic" id="s10">
+  <div class="topic-head">
+    <div class="eyebrow">10 · Change management</div>
+    <h2>Running the CoE as a change initiative</h2>
+    <p>Governance forums assume compliance. Adoption has to be earned — the same way any enterprise change program would.</p>
+  </div>
+  <div class="band-label">Plan for the adoption curve</div>
+  <div class="stage-row" id="adoption-stages" style="margin-bottom:30px;"></div>
+  <div class="subhead center">Managing resistance</div>
+  <div class="choices" id="resistance-choices"></div>
+</section>
+
+<div class="section-divider"><hr></div>
+
+<!-- ================= 11 AWARENESS CAMPAIGN ================= -->
+<section class="topic" id="s11">
+  <div class="topic-head">
+    <div class="eyebrow">11 · Building awareness</div>
+    <h2>An internal marketing campaign for the CoE</h2>
+    <p>A CoE nobody has heard of cannot be adopted, no matter how good its standards are. Run it through a funnel, not a one-time announcement.</p>
+  </div>
+  <div class="flow-row" id="awareness-funnel" style="margin-bottom:30px;"></div>
+  <div class="example" style="margin-bottom:28px;">
+    <div class="node-head"><p>Example</p></div>
+    <div class="txt">An AI CoE's launch email alone generated awareness but almost no usage. Adding a two-line "try this one prompt template in your next deck" call-to-action moved measurably more people into actual trial than three follow-up announcements combined.</div>
+  </div>
+  <div class="band-label">Channel mix and cadence</div>
+  <div class="dgrid-wrap" style="margin-bottom:30px;">
+    <table class="dgrid" id="channel-table"></table>
+  </div>
+  <div class="subhead center">A sample 90-day launch campaign</div>
+  <div class="stage-row" id="campaign-90"></div>
+</section>
+
+<div class="section-divider"><hr></div>
+
+<!-- ================= 12 SCALABILITY ================= -->
+<section class="topic" id="s12">
+  <div class="topic-head">
+    <div class="eyebrow">12 · Scalability and adaptability</div>
+    <h2>Designed to flex, not just to launch</h2>
+    <p>The org, the demand, and the CoE's own scope will all change well before it reaches full maturity.</p>
+  </div>
+  <div class="dgrid-wrap" style="margin-bottom:24px;">
+    <table class="dgrid" id="scaling-table"></table>
+  </div>
+  <div class="two-col">
+    <div class="info">
+      <div class="node-head"><p>Governing multiple CoEs</p></div>
+      <p style="font-size:11.8px; color:var(--ink-dim); line-height:1.7; margin:8px 0 0;">Once an organization runs more than one CoE, a light "CoE of CoEs" layer — a quarterly cross-lead forum — prevents duplicated standards and competing asks on the same practitioners.</p>
+    </div>
+    <div class="info" style="background:var(--purple-bg); border-color:var(--purple-bd);">
+      <div class="node-head"><p style="color:var(--purple-ink);">Resilience to org change</p></div>
+      <p style="font-size:11.8px; color:var(--ink-dim); line-height:1.7; margin:8px 0 0;">Document the operating model independently of any one leader. During M&amp;A, treat the CoE's standards as a candidate baseline for the combined entity.</p>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"><hr></div>
+
+<!-- ================= 13 CLOSING ================= -->
+<section class="topic" id="s13">
+  <div class="topic-head">
+    <div class="eyebrow">13 · Closing perspective</div>
+    <h2>The human layer decides the outcome</h2>
+    <p style="max-width:820px;">A Center of Excellence earns its name only when judged against a standard: measurable capability uplift, adoption that survives without enforcement, and a value story a CXO would repeat in their own words. The difference between a CoE that becomes a durable capability and one that quietly disappears at the next reorg almost always comes down to the human layer — whether the people in it want to stay, whether the people around it actually change how they work, and whether the whole design can flex as the organization does.</p>
+  </div>
+</section>
+
+<div class="principles">
+  <div class="principles-box">
+    <h3>Key principles</h3>
+    <div class="principles-grid">
+      <div><strong>✓</strong> Practice delivers, GCC scales, CoE elevates — know which one you need</div>
+      <div><strong>✓</strong> Standards without adoption are just documents</div>
+      <div><strong>✓</strong> Treat the CoE's comms as a real marketing campaign, not an announcement</div>
+      <div><strong>✓</strong> Knowledge management is the CoE's core asset, not a byproduct</div>
+      <div><strong>✓</strong> Fund, resource and govern the CoE with a lifecycle in mind — not just a launch</div>
+      <div><strong>✓</strong> Report outcomes, not activity</div>
+    </div>
+  </div>
+</div>
+
+<footer class="credit">Companion site to the white paper "Building the Center of Excellence" — Himadri Roy</footer>
+
+<script>
+/* ============================================================
+   Section navigation
+   ============================================================ */
+const sections = [
+  {id:'s1',  n:'01', label:'Triad'},
+  {id:'s2',  n:'02', label:'Landscape'},
+  {id:'s3',  n:'03', label:'Setup'},
+  {id:'s4',  n:'04', label:'Resourcing'},
+  {id:'s5',  n:'05', label:'Governance'},
+  {id:'s6',  n:'06', label:'Activities & KPIs'},
+  {id:'s7',  n:'07', label:'Knowledge mgmt'},
+  {id:'s8',  n:'08', label:'Maturity & funding'},
+  {id:'s9',  n:'09', label:'People'},
+  {id:'s10', n:'10', label:'Change mgmt'},
+  {id:'s11', n:'11', label:'Awareness'},
+  {id:'s12', n:'12', label:'Scalability'},
+  {id:'s13', n:'13', label:'Closing'},
+];
+document.getElementById('secnav').innerHTML = sections.map(s =>
+  `<a href="#${s.id}"><span class="secnav-pill" data-id="${s.id}"><span class="n">${s.n}</span>${s.label}</span></a>`
+).join('');
+/* ============================================================
+   01 — Triad cards
+   ============================================================ */
+const triad = [
+  { tag:'Discipline-based', accent:'', h:'Practice', items:['Delivers a defined service reliably','Unit of measure: utilization, delivery quality','Set up when you need repeatable delivery of a skill','Permanent, scales with demand'] },
+  { tag:'Location-based', accent:'accent-gold', h:'GCC / GBS', items:['Operates at scale with cost and control','Unit of measure: cost per FTE, SLA adherence','Set up to insource operations at scale','Permanent, strategic to the enterprise'] },
+  { tag:'Cross-functional', accent:'accent-purple', h:'Center of Excellence', items:['Elevates capability and standardizes practice','Unit of measure: maturity uplift, adoption, innovation ROI','Set up when a capability is fragmented or inconsistent','Often programmatic — can sunset once embedded'] },
+];
+document.getElementById('triad-cards').innerHTML = triad.map(t=>`
+  <div class="tcard ${t.accent}">
+    <div class="tag">${t.tag}</div>
+    <h4>${t.h}</h4>
+    <ul>${t.items.map(i=>`<li>${i}</li>`).join('')}</ul>
+  </div>`).join('');
+
+const benefits = ['Standardization across teams & geographies','Faster capability uplift','Safe space for innovation piloting','Stronger governance & visibility','Cost avoidance via reuse','Talent magnet & career pathway','Single source of truth for CXOs'];
+document.getElementById('benefits-chips').innerHTML = benefits.map(b=>`<span class="chip approval">${b}</span>`).join('');
+
+/* ============================================================
+   02 — Landscape cards
+   ============================================================ */
+const landscape = [
+  { tag:'Technology-focused · deep dive', accent:'accent-purple', h:'AI / GenAI CoE', items:['Automation & RPA','Data & Analytics — deep dive','Cloud / DevOps','Cybersecurity'] },
+  { tag:'Functional · deep dive', accent:'accent-gold', h:'Program & Portfolio Mgmt CoE', items:['Change Management','Quality / CMMI','Vendor Management'] },
+  { tag:'Strategic / enterprise', accent:'accent-teal', h:'Innovation, ESG & CX CoEs', items:['Sustainability / ESG','Customer Experience','Risk & Compliance'] },
+];
+document.getElementById('landscape-cards').innerHTML = landscape.map(t=>`
+  <div class="tcard ${t.accent}">
+    <div class="tag">${t.tag}</div>
+    <h4>${t.h}</h4>
+    <ul>${t.items.map(i=>`<li>${i}</li>`).join('')}</ul>
+  </div>`).join('');
+
+/* ============================================================
+   03 — Stakeholders + deliverables
+   ============================================================ */
+const stakeholders = ['Executive sponsor / CXO','Practice / delivery leads','GCC/GBS leadership','CoE lead & core team','End practitioners','Finance / PMO governance','Risk, compliance & security'];
+document.getElementById('stakeholder-chips').innerHTML = stakeholders.map(s=>`<span class="chip system">${s}</span>`).join('');
+
+const deliverables = [
+  { tag:'AI / GenAI CoE', accent:'accent-purple', items:['Use-case intake & prioritization framework','Responsible-AI governance policy','Reusable prompt/agent libraries','Pilot-to-production playbook'] },
+  { tag:'Program & Portfolio Mgmt CoE', accent:'accent-gold', items:['Standard methodology & templates','Portfolio dashboard & reporting cadence','PM competency & certification pathway','Lessons-learned repository'] },
+  { tag:'Data & Analytics CoE', accent:'accent-teal', items:['Data governance & quality standards','Certified data catalog & reusable models','Self-service BI accelerators','Common metrics/KPI dictionary'] },
+];
+document.getElementById('deliverable-cards').innerHTML = deliverables.map(t=>`
+  <div class="tcard ${t.accent}">
+    <div class="tag">Signature deliverables</div>
+    <h4>${t.tag}</h4>
+    <ul>${t.items.map(i=>`<li>${i}</li>`).join('')}</ul>
+  </div>`).join('');
+
+/* ============================================================
+   04 — Resourcing cards
+   ============================================================ */
+const resourcing = [
+  { h:'Fully centralized', how:'A dedicated team owns all CoE activity full-time', fit:'Early-stage CoEs needing fast, consistent standards', trade:'Can feel remote from delivery; higher fixed cost' },
+  { h:'Federated / hub-and-spoke', how:'A small hub sets standards; champions execute locally', fit:'Mature CoEs spanning many geographies or BUs', trade:'Needs strong community management' },
+  { h:'Virtual / matrixed', how:'SMEs contribute a fixed % of time alongside delivery', fit:'Niche or emerging capabilities pre-charter', trade:'Competes with billable priorities; slower cadence' },
+  { h:'Managed extension', how:'Core team supplemented by a specialist partner', fit:'Fast-scaling tech CoEs (AI, Data) where skill supply lags', trade:'Needs strong knowledge-transfer discipline' },
+];
+document.getElementById('resourcing-cards').innerHTML = resourcing.map(r=>`
+  <div class="tcard">
+    <h4>${r.h}</h4>
+    <div class="row"><span class="k">How</span><span class="v">${r.how}</span></div>
+    <div class="row"><span class="k">Fit</span><span class="v">${r.fit}</span></div>
+    <div class="row"><span class="k">Trade-off</span><span class="v">${r.trade}</span></div>
+  </div>`).join('');
+
+/* ============================================================
+   05 — Governance tabs
+   ============================================================ */
+const governance = {
+  'AI / GenAI CoE': [
+    ['AI Governance Council','Quarterly','CXO sponsor, Risk/Legal, CoE lead','Approve policy, review high-risk use cases'],
+    ['Use-case intake board','Bi-weekly','CoE lead, business owners','Prioritize and greenlight new AI use cases'],
+    ['Responsible-AI review','Per release','CoE lead, Security, Compliance','Pre-production risk and bias review'],
+    ['Practitioner community','Monthly','AI CoE team, champions','Share patterns, reusable assets, lessons'],
+  ],
+  'Program & Portfolio Mgmt CoE': [
+    ['Portfolio steering committee','Monthly','CXO sponsor, program directors','Portfolio health, prioritization, escalations'],
+    ['PM standards board','Quarterly','CoE lead, senior PMs','Approve methodology and template updates'],
+    ['Delivery cadence review','Weekly/bi-weekly','CoE lead, program managers','RAID review, milestone tracking'],
+    ['PM community of practice','Monthly','All certified PMs','Skill-building, lessons-learned'],
+  ],
+  'Data & Analytics CoE': [
+    ['Data governance council','Quarterly','CXO sponsor, data owners, Legal','Data policy, stewardship accountability'],
+    ['Data quality review','Monthly','CoE lead, data stewards','Quality scorecards, remediation tracking'],
+    ['Analytics demand board','Bi-weekly','CoE lead, analytics leads','Prioritize dashboard/model requests'],
+    ['Data community of practice','Monthly','Analysts, engineers, champions','Reusable models, catalog adoption'],
+  ],
+};
+const govKeys = Object.keys(governance);
+document.getElementById('gov-tabs').innerHTML = govKeys.map((k,i)=>`<button class="tab-btn ${i===0?'active':''}" data-tab="${i}">${k}</button>`).join('');
+document.getElementById('gov-panels').innerHTML = govKeys.map((k,i)=>`
+  <div class="tab-panel ${i===0?'active':''}" data-panel="${i}">
+    <div class="dgrid-wrap">
+      <table class="dgrid">
+        <tr><th>Forum</th><th>Frequency</th><th>Participants</th><th>Purpose</th></tr>
+        ${governance[k].map(row=>`<tr><td class="strong">${row[0]}</td><td>${row[1]}</td><td>${row[2]}</td><td>${row[3]}</td></tr>`).join('')}
+      </table>
+    </div>
+  </div>`).join('');
+Array.from(document.querySelectorAll('.tab-btn')).forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    Array.from(document.querySelectorAll('.tab-btn')).forEach(b=>b.classList.toggle('active', b===btn));
+    Array.from(document.querySelectorAll('.tab-panel')).forEach(p=>p.classList.toggle('active', p.dataset.panel === btn.dataset.tab));
+  });
+});
+
+/* ============================================================
+   06 — Activities & KPIs
+   ============================================================ */
+const activities = ['Standard-setting','Enablement','Asset-building','Governance','Innovation piloting','Measurement & reporting'];
+document.getElementById('activity-chips').innerHTML = activities.map(a=>`<span class="chip gold">${a}</span>`).join('');
+
+const kpis = [
+  { tag:'AI / GenAI CoE', accent:'accent-purple', obj:'Scale responsible AI adoption', items:['# use cases in production','% passing responsible-AI review first time','Cycle time pilot → production'] },
+  { tag:'Program & Portfolio Mgmt CoE', accent:'accent-gold', obj:'Raise delivery predictability', items:['% programs on-time/on-budget','PM certification coverage','Template/methodology adoption'] },
+  { tag:'Data & Analytics CoE', accent:'accent-teal', obj:'Make trusted data the default', items:['% critical data assets certified','Data quality score trend','Self-service adoption rate'] },
+];
+document.getElementById('kpi-cards').innerHTML = kpis.map(k=>`
+  <div class="tcard ${k.accent}">
+    <div class="tag">${k.tag}</div>
+    <h4>${k.obj}</h4>
+    <ul>${k.items.map(i=>`<li>${i}</li>`).join('')}</ul>
+  </div>`).join('');
+
+/* ============================================================
+   07 — Knowledge lifecycle
+   ============================================================ */
+const kmFlow = [
+  { tag:'Stage 1', h:'Capture', d:'Standards, templates, and — deliberately — lessons learned as they happen' },
+  { tag:'Stage 2', h:'Curate & validate', d:'A named owner reviews for accuracy and confirms current practice' },
+  { tag:'Stage 3', h:'Publish', d:'Made discoverable and actively pushed through the champion network' },
+  { tag:'Stage 4', h:'Apply', d:'Used in real delivery — where reuse actually creates value' },
+  { tag:'Stage 5', h:'Retire / refresh', d:'Reviewed on a fixed cycle; stale assets are archived, not left live' },
+];
+document.getElementById('km-flow').innerHTML = kmFlow.map((n,i)=>
+  `<div class="flow-node"><div class="step-tag">${n.tag}</div><h4>${n.h}</h4><p>${n.d}</p></div>${i<kmFlow.length-1?'<div class="flow-arrow">→</div>':''}`
+).join('');
+
+/* ============================================================
+   08 — Maturity, funding, anti-patterns
+   ============================================================ */
+const maturity = [
+  { lv:'CRAWL', h:'Foundation', d:'Charter and sponsor secured; first standards and quick-win pilots shipped' },
+  { lv:'WALK', h:'Adoption', d:'Standards adopted beyond the pilot group; governance cadence running' },
+  { lv:'RUN', h:'Embedded', d:'CoE practices are the default way of working; value is trusted' },
+  { lv:'FLY', h:'Value multiplier', d:'CoE shapes enterprise strategy; a recognized external differentiator' },
+];
+document.getElementById('maturity-stages').innerHTML = maturity.map((m,i)=>
+  `<div class="stage-pill"><div class="lv">${m.lv}</div><h4>${m.h}</h4><p>${m.d}</p></div>${i<maturity.length-1?'<div class="stage-arrow">→</div>':''}`
+).join('');
+
+const funding = ['Central cost center','Shared-services chargeback','Value-based / self-funding','Hybrid model'];
+document.getElementById('funding-chips').innerHTML = funding.map(f=>`<span class="chip knowledge">${f}</span>`).join('');
+
+const antipatterns = [
+  { lbl:'IVORY TOWER', txt:'Standards written without delivery input, so nobody adopts them' },
+  { lbl:'BOTTLENECK', txt:'Every request must route through the CoE, slowing delivery instead of accelerating it' },
+  { lbl:'VANITY METRICS', txt:'Reporting activity — documents published, meetings held — instead of adoption or outcome' },
+  { lbl:'NO SUNSET PLAN', txt:'The CoE never graduates responsibilities back to BAU, so headcount grows indefinitely' },
+];
+document.getElementById('antipattern-choices').innerHTML = antipatterns.map(a=>`
+  <div class="choice no"><span class="lbl">${a.lbl}</span><span class="txt">${a.txt}</span></div>`).join('');
+
+/* ============================================================
+   09 — People roles table
+   ============================================================ */
+const roles = [
+  ['CoE lead','Full-time, dedicated','Charter ownership, sponsor relationship, roadmap and reporting'],
+  ['Core SMEs','Full-time or majority-time','Standard-setting, asset-building, escalation support'],
+  ['Embedded champions','Fractional (10–20%)','Local adoption, feedback loop, first-line coaching'],
+  ['Extended contributors','Ad hoc / project-based','Pilot participation, content review, community engagement'],
+];
+document.getElementById('roles-table').innerHTML = `
+  <tr><th>Role</th><th>Time commitment</th><th>Core responsibility</th></tr>
+  ${roles.map(r=>`<tr><td class="strong">${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join('')}`;
+
+/* ============================================================
+   10 — Adoption curve + resistance
+   ============================================================ */
+const adoption = [
+  { lv:'EARLY ADOPTERS', h:'Self-select in', d:'Pilot with willing teams first — their results are the proof point' },
+  { lv:'THE MAJORITY', h:'Need proof & repetition', d:'Use pilot evidence and live enablement before they switch' },
+  { lv:'RESISTANT MINORITY', h:'Route through their manager', d:'Direct CoE persuasion rarely works here — the manager relationship does' },
+];
+document.getElementById('adoption-stages').innerHTML = adoption.map((a,i)=>
+  `<div class="stage-pill"><div class="lv">${a.lv}</div><h4>${a.h}</h4><p>${a.d}</p></div>${i<adoption.length-1?'<div class="stage-arrow">→</div>':''}`
+).join('');
+
+const resistance = [
+  { lbl:'"THIS SLOWS ME DOWN"', txt:'Respond with time-to-value evidence from the pilot group; simplify the standard if the feedback is legitimate', tone:'hold' },
+  { lbl:'"WE ALREADY DO THIS OUR WAY"', txt:'Co-opt the best of the existing local practice into the standard, rather than overwriting it wholesale', tone:'hold' },
+  { lbl:'"NO ONE IS CHECKING ANYWAY"', txt:"Tie adoption to a visible metric the practitioner's own manager sees, not just a CoE-internal report", tone:'hold' },
+];
+document.getElementById('resistance-choices').innerHTML = resistance.map(r=>`
+  <div class="choice ${r.tone}"><span class="lbl">${r.lbl}</span><span class="txt">${r.txt}</span></div>`).join('');
+
+/* ============================================================
+   11 — Awareness funnel, channel table, 90-day campaign
+   ============================================================ */
+const funnel = [
+  { tag:'Stage 1', h:'Awareness', d:'The audience knows the CoE exists and what it\'s for' },
+  { tag:'Stage 2', h:'Interest', d:'They understand what\'s in it for them' },
+  { tag:'Stage 3', h:'Trial / adoption', d:'They actually use a standard, template or tool' },
+  { tag:'Stage 4', h:'Advocacy', d:'They recommend the CoE to peers unprompted' },
+];
+document.getElementById('awareness-funnel').innerHTML = funnel.map((n,i)=>
+  `<div class="flow-node"><div class="step-tag">${n.tag}</div><h4>${n.h}</h4><p>${n.d}</p></div>${i<funnel.length-1?'<div class="flow-arrow">→</div>':''}`
+).join('');
+
+const channels = [
+  ['Newsletter','Monthly / bi-weekly','Digest of new assets, adoption wins, upcoming events'],
+  ['Targeted email campaigns','Launch & milestone-triggered','Segmented asks — different message per audience'],
+  ['Town halls / webinars','Quarterly','Live demos, Q&A, visible executive sponsorship'],
+  ['Office hours / calls','Weekly / bi-weekly','Direct, low-pressure engagement and troubleshooting'],
+  ['Intranet / knowledge portal','Always-on','The discoverable home base everything points back to'],
+  ['Champion network','Continuous','Peer-to-peer sharing — the most trusted channel'],
+];
+document.getElementById('channel-table').innerHTML = `
+  <tr><th>Channel</th><th>Cadence</th><th>Best for</th></tr>
+  ${channels.map(c=>`<tr><td class="strong">${c[0]}</td><td>${c[1]}</td><td>${c[2]}</td></tr>`).join('')}`;
+
+const campaign90 = [
+  { lv:'DAYS 1–15', h:'Teaser & launch prep', d:'Sponsor teaser message, intranet page live, webinar scheduled' },
+  { lv:'DAYS 16–45', h:'Launch', d:'Webinar & email, weekly office hours begin, first newsletter, champion spotlight' },
+  { lv:'DAYS 46–90', h:'Reinforce', d:'First success story, usage data shared, CXO video message, metrics reviewed' },
+];
+document.getElementById('campaign-90').innerHTML = campaign90.map((c,i)=>
+  `<div class="stage-pill"><div class="lv">${c.lv}</div><h4>${c.h}</h4><p>${c.d}</p></div>${i<campaign90.length-1?'<div class="stage-arrow">→</div>':''}`
+).join('');
+
+/* ============================================================
+   12 — Scaling triggers
+   ============================================================ */
+const scaling = [
+  ['Demand consistently exceeds core team capacity','Move from fully centralized toward federated / hub-and-spoke'],
+  ['New geography or business unit onboarded','Add a regional champion node rather than growing centrally'],
+  ['Standard requests plateau, adoption self-sustaining','Right-size toward a smaller stewardship function'],
+  ['A new technology or regulation shifts the discipline','Re-open the charter for a scoped refresh'],
+];
+document.getElementById('scaling-table').innerHTML = `
+  <tr><th>Signal</th><th>Likely response</th></tr>
+  ${scaling.map(s=>`<tr><td class="strong">${s[0]}</td><td>${s[1]}</td></tr>`).join('')}`;
+
+/* ============================================================
+   Scroll-spy nav highlighting (progressive enhancement — safe to fail)
+   ============================================================ */
+try{
+  const navPills = Array.from(document.querySelectorAll('.secnav-pill'));
+  if('IntersectionObserver' in window){
+    const spyObserver = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){
+          navPills.forEach(p=>p.classList.toggle('active', p.dataset.id === e.target.id));
+        }
+      });
+    }, { rootMargin:'-40% 0px -50% 0px' });
+    sections.forEach(s=>{
+      const el = document.getElementById(s.id);
+      if(el) spyObserver.observe(el);
+    });
+  }
+}catch(e){ /* nav highlighting is a nice-to-have; page works fine without it */ }
+</script>
+</body>
+</html>
